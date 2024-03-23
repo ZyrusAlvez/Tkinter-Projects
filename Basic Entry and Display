@@ -1,0 +1,33 @@
+from tkinter import Tk, Button, Entry, Frame, Label
+
+def entry_activity():
+    label_text.config(text=entry_text.get())
+
+main = Tk()
+main.geometry("390x450")
+main.title("J1T-midLA1")
+main.configure(bg="lightblue")
+
+frm1 = Frame(main, bg="lightblue")
+frm1.pack()
+
+name = Label(frm1, text="Zyrus R. Alvez", font=("Arial", 12, "bold"), bg="lightblue")
+name.pack(pady=(20, 40))
+
+prompt = Label(frm1, text="Input Text Here", font=("Arial", 10, "bold"), bg="lightblue", fg="red")
+prompt.pack()
+
+entry_text = Entry(frm1, width=22, font=("Arial", 12))
+entry_text.pack(pady=5)
+
+button_display = Button(frm1, text="Display Text", width=12, font=("Arial", 9, "bold"), command=entry_activity)
+button_display.pack(pady=5)
+
+frm2 = Frame(main, width=330, height=999999, relief="sunken", borderwidth=5)
+frm2.propagate(False)
+frm2.pack(pady=30)
+
+label_text = Label(frm2, text="", font=("courier", 10), wraplength=315, justify="left")
+label_text.pack(anchor="w")
+
+main.mainloop()
