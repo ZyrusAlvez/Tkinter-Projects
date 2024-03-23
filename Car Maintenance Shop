@@ -1,0 +1,247 @@
+from tkinter import *
+from datetime import datetime
+
+# I've programmed this application to accommodate various window sizes
+# I've improved the program to ensure it remains accurate even if prices change. 
+# This means it will always calculate the total cost correctly, regardless of any adjustments to the prices.
+
+car = {
+    "BMW" : 5_000,
+    "Subaru" : 2_500,
+    "Chevrolet" : 4_100
+}
+interior_option = {
+    "leather" : 550 ,
+    "GPS" : 1_000
+}
+exterior_finish = {
+    "Hard top" : 0 ,
+    "Convertible" : 0
+}
+exterior_option = {
+    "Wheel Upgrade" : 1_000 ,
+    "Performance Package" : 2_000
+}
+
+
+def summary():
+    
+    global lbl_left_receipt_car, lbl_left_receipt_leather, lbl_left_receipt_GPS, lbl_left_receipt_exteriorFinish, lbl_left_receipt_wheelUpgrade, lbl_left_receipt_performancePackage
+    global lbl_right_receipt_car, lbl_right_receipt_exteriorFinish, lbl_right_receipt_GPS, lbl_right_receipt_leather, lbl_right_receipt_wheelUpgrade, lbl_right_receipt_performancePackage
+    global lbl_total
+    frm_summary.pack(fill="both", padx=10)
+    frm_main.pack_forget()
+    
+    total = 0
+    
+    try:
+        total += car[car_choice.get()]
+        lbl_left_receipt_car = Label(frm_left_receipt, text=car_choice.get(), font=("courier", 9))
+        lbl_left_receipt_car.pack(anchor="w", pady=(0, 5))
+        lbl_right_receipt_car = Label(frm_right_receipt, text=car[car_choice.get()], font=("courier", 9))
+        lbl_right_receipt_car.pack(anchor="e", pady=(0, 5))
+    except:
+        total += 0
+        
+    if choice_interior_option1.get():
+        total += interior_option["GPS"]
+        lbl_left_receipt_GPS = Label(frm_left_receipt, text="GPS", font=("courier", 9))
+        lbl_left_receipt_GPS.pack(anchor="w", pady=(0, 5))
+        lbl_right_receipt_GPS = Label(frm_right_receipt, text=interior_option["GPS"], font=("courier", 9))
+        lbl_right_receipt_GPS.pack(anchor="e", pady=(0, 5))
+    if choice_interior_option2.get():
+        total += interior_option["leather"]
+        lbl_left_receipt_leather = Label(frm_left_receipt, text="leather", font=("courier", 9))
+        lbl_left_receipt_leather.pack(anchor="w", pady=(0, 5))
+        lbl_right_receipt_leather = Label(frm_right_receipt, text=interior_option["leather"], font=("courier", 9))
+        lbl_right_receipt_leather.pack(anchor="e", pady=(0, 5))
+        
+    try:
+        total += exterior_finish[exterior_finish_choice.get()]
+        lbl_left_receipt_exteriorFinish = Label(frm_left_receipt, text=exterior_finish_choice.get(), font=("courier", 8))
+        lbl_left_receipt_exteriorFinish.pack(anchor="w", pady=(0, 5))
+        lbl_right_receipt_exteriorFinish = Label(frm_right_receipt, text=exterior_finish[exterior_finish_choice.get()], font=("courier", 9))
+        lbl_right_receipt_exteriorFinish.pack(anchor="e", pady=(0, 5))
+    except:
+        total += 0
+    if choice_exterior_option1.get():
+        total += exterior_option["Performance Package"]
+        lbl_left_receipt_performancePackage = Label(frm_left_receipt, text="Performance Package", font=("courier", 9))
+        lbl_left_receipt_performancePackage.pack(anchor="w", pady=(0, 5))
+        lbl_right_receipt_performancePackage = Label(frm_right_receipt, text=exterior_option["Performance Package"], font=("courier", 9))
+        lbl_right_receipt_performancePackage.pack(anchor="e", pady=(0, 5))
+    if choice_exterior_option2.get():
+        total += exterior_option["Wheel Upgrade"]
+        lbl_left_receipt_wheelUpgrade = Label(frm_left_receipt, text="Wheel Upgrade", font=("courier", 9))
+        lbl_left_receipt_wheelUpgrade.pack(anchor="w", pady=(0, 5))
+        lbl_right_receipt_wheelUpgrade = Label(frm_right_receipt, text=exterior_option["Wheel Upgrade"], font=("courier", 9))
+        lbl_right_receipt_wheelUpgrade.pack(anchor="e", pady=(0, 5))
+        
+    lbl_total = Label(frm_summary, text=f"                          Total: {total:.2f}", font=("courier", 10, "bold"))
+    lbl_total.pack(pady=20)
+    
+    print (total)
+    
+def back():
+    frm_main.pack(fill="both", pady=10)
+    frm_summary.pack_forget()
+    try:
+        lbl_left_receipt_car.destroy()
+        lbl_right_receipt_car.destroy()
+    except:
+        pass
+    try:
+        lbl_left_receipt_exteriorFinish.destroy()
+        lbl_right_receipt_exteriorFinish.destroy()
+    except:
+        pass
+    try:
+        lbl_left_receipt_GPS.destroy()
+        lbl_right_receipt_GPS.destroy()
+    except:
+        pass
+    try:
+        lbl_left_receipt_leather.destroy()
+        lbl_right_receipt_leather.destroy()
+    except:
+        pass
+    try:   
+        lbl_left_receipt_wheelUpgrade.destroy()
+        lbl_right_receipt_wheelUpgrade.destroy()
+    except:
+        pass
+    try:
+        lbl_left_receipt_performancePackage.destroy()
+        lbl_right_receipt_performancePackage.destroy()
+    except:
+        pass
+    lbl_total.destroy()
+        
+
+app = Tk()
+app.geometry("350x500")
+app.title("mid_LA2")
+
+# First Main Frame (Car Maintenance Interface)
+frm_main = Frame(app)
+frm_main.pack(fill="both", pady=10)
+lbl_title = Label(frm_main, text="Car Maintenance", font=("courier", 12, "bold"))
+lbl_title.pack(pady=(10, 0))
+
+
+# First Part of the Selection
+frm_car = LabelFrame(frm_main, text="Car", font=("courier", 10, "bold"))
+frm_car.pack(padx=20, pady=5, expand=True, fill="both", ipady=5)
+
+frm_car_radbtn = Frame(frm_car)
+frm_car_radbtn.pack(expand=True, fill="x", side="left", padx=(0, 20))
+frm_car_price = Frame(frm_car)
+frm_car_price.pack(expand=True, fill="x", side="left", padx=(20, 0))
+
+car_choice = StringVar()
+car_choice.set(False)
+for name in car:
+    radbtn_car = Radiobutton(frm_car_radbtn, text=name, variable=car_choice, value=name, font=("courier", 10))
+    radbtn_car.pack(anchor="w")
+    car_price = Label(frm_car_price, font=("courier", 10), text=str(car[name]))
+    car_price.pack(anchor="e")
+    
+# Second Part of the Selection
+frm_interior_option = LabelFrame(frm_main, text="Interior Option", font=("courier", 10, "bold"), width=300, height=90)
+frm_interior_option.pack(padx=20, pady=5, expand=True, fill="both", ipady=5)
+
+frm_interior_option_chkbtn = Frame(frm_interior_option)
+frm_interior_option_chkbtn.pack(expand=True, fill="x", side="left", padx=(0, 20))
+frm_interior_option_price = Frame(frm_interior_option)
+frm_interior_option_price.pack(expand=True, fill="x", side="left", padx=(20, 0))
+
+
+choice_interior_option1 = BooleanVar()
+choice_interior_option1.set(False)
+chkbtn_interior_option1 = Checkbutton(frm_interior_option_chkbtn, text="GPS", font=("courier", 10),variable=choice_interior_option1)
+chkbtn_interior_option1.pack(anchor="w")
+interior_option_price1 = Label(frm_interior_option_price, font=("courier", 10), text=str(interior_option["GPS"]))
+interior_option_price1.pack(anchor="e")
+
+choice_interior_option2 = BooleanVar()
+choice_interior_option2.set(False)
+chkbtn_interior_option2 = Checkbutton(frm_interior_option_chkbtn, text="leather", font=("courier", 10),variable=choice_interior_option2)
+chkbtn_interior_option2.pack(anchor="w")
+interior_option_price2 = Label(frm_interior_option_price, font=("courier", 10), text=str(interior_option["leather"]))
+interior_option_price2.pack(anchor="e")
+
+    
+# Third Part of the Selection
+
+frm_exterior_finish = LabelFrame(frm_main, text="Exterior Finish", font=("courier", 10, "bold"), width=300, height=90)
+frm_exterior_finish.pack(padx=20, pady=5, expand=True, fill="both", ipady=5)
+
+frm_exterior_finish_radbtn =  Frame(frm_exterior_finish)
+frm_exterior_finish_radbtn.pack(expand=True, fill="x", side="left", padx=(0, 20))
+frm_exterior_finish_price = Frame(frm_exterior_finish)
+frm_exterior_finish_price.pack(expand=True, fill="x", side="left", padx=(20, 0))
+
+exterior_finish_choice = StringVar()
+exterior_finish_choice.set(False)
+for name in exterior_finish:
+    radbtn_exterior_finish = Radiobutton(frm_exterior_finish_radbtn, text=name, variable=exterior_finish_choice, value=name, font=("courier", 10))
+    radbtn_exterior_finish.pack(anchor="w")
+    exterior_finish_price = Label(frm_exterior_finish_price, font=("courier", 10), text=str(exterior_finish[name]))
+    exterior_finish_price.pack(anchor="e")
+    
+# Fourth Part of the Selection
+
+frm_exterior_option = LabelFrame(frm_main, text="Exterior Option", font=("courier", 10, "bold"), width=300, height=90)
+frm_exterior_option.pack(padx=20, pady=5, expand=True, fill="both", ipady=5)
+
+frm_exterior_option_chkbtn = Frame(frm_exterior_option)
+frm_exterior_option_chkbtn.pack(expand=True, fill="x", side="left", padx=(0, 20))
+frm_exterior_option_price = Frame(frm_exterior_option)
+frm_exterior_option_price.pack(expand=True, fill="x", side="left", padx=(20, 0))
+
+choice_exterior_option1 = BooleanVar()
+choice_exterior_option1.set(False)
+chkbtn_exterior_option1 = Checkbutton(frm_exterior_option_chkbtn, text="Performance Package", font=("courier", 10), variable=choice_exterior_option1)
+chkbtn_exterior_option1.pack(anchor="w")
+exterior_option_price = Label(frm_exterior_option_price, font=("courier", 10), text=str(exterior_option["Performance Package"]))
+exterior_option_price.pack(anchor="e")
+
+choice_exterior_option2 = BooleanVar()
+choice_exterior_option2.set(False)
+chkbtn_exterior_option2 = Checkbutton(frm_exterior_option_chkbtn, text="Wheel Upgrade", font=("courier", 10), variable=choice_exterior_option2)
+chkbtn_exterior_option2.pack(anchor="w")
+exterior_option_price = Label(frm_exterior_option_price, font=("courier", 10), text=str(exterior_option["Wheel Upgrade"]))
+exterior_option_price.pack(anchor="e")
+
+# Button to go to the Second Main Frame (Summary Interface)
+
+btn_summary = Button(frm_main, text="Summary", command=summary, width=10, font=("courier", 10))
+btn_summary.pack(pady=10)
+   
+    
+# Second Main Frame (Summary Interface)
+
+frm_summary = Frame(app)
+frm_summary.pack_forget()
+
+# Button to go back to the First Main Frame (Car Maintenance Interface)
+btn_back = Button(frm_summary, text="⬅️ Back", command=back, width=10, font=("courier", 10))
+btn_back.pack(anchor="e", padx=10, pady=(10, 0))
+
+lbl_title2 = Label(frm_summary, text="Car Maintenance", font=("courier", 12, "bold"))
+lbl_title2.pack(pady=(30, 0))
+lbl_subtitle2 = Label(frm_summary, text="Summary", font=("courier", 10))
+lbl_subtitle2.pack()
+lbl_date = Label(frm_summary, text=datetime.now().strftime("%Y-%m-%d %H:%M:%S"), font=("courier", 10))
+lbl_date.pack()
+
+frm_receipt = Frame(frm_summary, relief="sunken", borderwidth=2)
+frm_receipt.pack(side="top", fill="both", expand=True)
+
+# initialization of nested frames (to better control the widgets)
+frm_left_receipt = Frame(frm_receipt)
+frm_left_receipt.pack(side="left", anchor="w")
+frm_right_receipt = Frame(frm_receipt)
+frm_right_receipt.pack(side="right", anchor="e")
+
+app.mainloop()
