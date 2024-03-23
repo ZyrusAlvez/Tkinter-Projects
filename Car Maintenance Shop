@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Label, Frame, Button, Radiobutton, Checkbutton, LabelFrame, BooleanVar, StringVar, Tk
 from datetime import datetime
 
 # I've programmed this application to accommodate various window sizes
