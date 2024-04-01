@@ -1,0 +1,126 @@
+from tkinter import Tk, Menu, Button, Entry, Frame, Listbox, Label
+from tkinter import messagebox
+# FILE
+current_file = random_items = ["apple", "banana", "carrot", "desk", "elephant", "frog"]
+saved_file = []
+
+def open_file():
+    global current_file
+
+    # removes the current elements from the listbox
+    for _ in range(len(current_file)):
+        listbox.delete(0)
+        
+    # opening or showing the last saved file
+    for i, element in enumerate(saved_file):
+        listbox.insert(i, f"• {element}")
+    listbox.config(height=listbox.size())
+    
+    # updates the current_file list    
+    current_file = saved_file.copy()
+       
+def save_file():
+    global saved_file
+    
+    # updates the saved_file list
+    saved_file = current_file.copy()
+    print (f"{saved_file = }")
+
+def add_item():
+    
+    def pressed_add():
+        # modifies the file
+        current_file.append(entry.get())
+        
+        # appearance
+        listbox.insert("end", f"• {entry.get()}")
+        listbox.config(height=listbox.size())
+        frame.destroy()
+    
+    frame = Frame(app)
+    frame.pack()
+    entry = Entry(frame)
+    entry.pack(side="left")
+    btn_add = Button(frame, text="Add", command=pressed_add)
+    btn_add.pack(side="left")
+    
+def delete_item():
+    try:
+        # modifies the file
+        current_file.pop(listbox.curselection()[0])
+        
+        # appearance
+        listbox.delete(listbox.curselection())
+        listbox.config(height=listbox.size())
+    except:
+        messagebox.showerror(title="Error occured", message="Select an item first")
+    
+def edit_item():
+    
+    def pressed_submit():
+        try:
+            # modifies the file
+            current_file[listbox.curselection()[0]] = entry.get()
+            
+            # appearance
+            listbox.insert(listbox.curselection()[0], f"• {entry.get()}")
+            listbox.delete(listbox.curselection())
+            listbox.config(height=listbox.size())
+            frame.destroy()
+        except:
+            messagebox.showerror(title="Error occured", message="Select an item first")
+    
+    frame = Frame(app)
+    frame.pack()
+    entry = Entry(frame)
+    entry.pack(side="left")
+    btn_submit = Button(frame, text="Submit", command=pressed_submit)
+    btn_submit.pack(side="left")
+    
+def help():
+    if saved_file:
+        messagebox.showinfo(title="Application Info", message=f"Save File: {', '.join(saved_file)}")
+    else:
+        messagebox.showinfo(title="Application Info", message=f"Save File: None")
+    
+
+app = Tk()
+app.geometry("300x400")
+app.title("mid_LA3 - frame, list, message, menu")
+
+# Menu
+menu = Menu(app)
+
+# File submenu
+menu_file = Menu(menu, tearoff=False)
+menu_file.add_command(label="Open", command=open_file)
+menu_file.add_command(label="Save", command=save_file)
+
+menu.add_cascade(label="File", menu=menu_file)
+
+# Edit submenu
+menu_edit = Menu(menu, tearoff=False)
+menu_edit.add_command(label="Add", command=add_item)
+menu_edit.add_command(label="Delete", command=delete_item)
+menu_edit.add_command(label="Edit", command=edit_item)
+
+menu.add_cascade(label="Edit", menu=menu_edit)
+
+# Help submenu
+menu.add_cascade(label="Help", command=help)
+
+app.configure(menu=menu)
+
+lbl = Label(app, text="Items:",font=("courier", 15))
+lbl.pack(pady=(5,0))
+
+# Listbox
+listbox = Listbox(app, background="#F1EEDC", font=("courier", 15))
+listbox.pack(pady=10)
+
+# Accessing the data from the current_file
+for i, element in enumerate(current_file):
+    listbox.insert(i, f"• {element}")
+listbox.config(height=listbox.size())
+
+app.mainloop()
