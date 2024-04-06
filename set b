@@ -1,0 +1,61 @@
+from tkinter import *
+from tkinter import messagebox
+
+def greet():
+    greetings = f'Hello, {entry.get()}!'
+    messagebox.showinfo(message=greetings)
+    greeting_label.config(text=greetings)
+
+app = Tk()
+app.geometry("500x400")
+app.resizable(False, False)
+
+lbl = Label(app, text="Enter your name.")
+lbl.grid(row=0, column=0)
+
+entry = Entry(app)
+entry.grid(row=0, column=1)
+
+greeting_label = Label(app, text="")
+greeting_label.grid(row=1, column=1)
+
+btn = Button(app, text='Generate Greeting', command=greet)
+btn.grid(row=3, column=1)
+
+frame = Frame(app)
+frame.grid(row=2, column=1)
+
+choose = IntVar()
+choose.set(2)
+radbtn_small = Radiobutton(frame, text="Small", variable=choose, value=1, command=lambda: greeting_label.config(font=("Arial", 8))).pack(anchor="w")
+radbtn_medium = Radiobutton(frame, text="Medium", variable=choose, value=2, command=lambda: greeting_label.config(font=("Arial", 12))).pack(anchor="w")
+radbtn_large = Radiobutton(frame, text="Large", variable=choose, value=3, command=lambda: greeting_label.config(font=("Arial", 16))).pack(anchor="w")
+
+frame_for_listbox = Frame(app)
+frame_for_listbox.grid(row=4, column=1)
+
+scrollbar = Scrollbar(frame_for_listbox)
+scrollbar.pack(fill="y", side="right")
+
+listbox = Listbox(frame_for_listbox, yscrollcommand=scrollbar.set)
+listbox.pack()
+
+for i in ["United States", "Canada", "PH", "United Kingdom", "Australia", "Germany", "France", "Japan", "Brazil", "India", "China", "United States", "Canada", "PH", "United Kingdom", "Australia", "Germany", "France", "Japan", "Brazil", "India", "China"]:
+    listbox.insert("end", i)
+
+menubar = Menu(app)
+
+menu_new = Menu(menubar, tearoff=False)
+menu_new.add_command(label="Add")
+menubar.add_cascade(label="New", menu=menu_new)
+
+menu_about = Menu(menubar, tearoff=False)
+menu_about.add_command(label="Info")
+menubar.add_cascade(label="About", menu=menu_about)
+
+app.config(menu=menubar)
+app.mainloop()
+
+
+This Python Tkinter GUI application allows users to input their name and generates a personalized greeting message. 
+It features font size options for the greeting, a scrollable list of items, and an "About" menu with basic information about the program.
