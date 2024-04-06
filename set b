@@ -59,3 +59,8 @@ app.mainloop()
 
 This Python Tkinter GUI application allows users to input their name and generates a personalized greeting message. 
 It features font size options for the greeting, a scrollable list of items, and an "About" menu with basic information about the program.
+
+def add_item():
+    item = simpledialog.askstring(" ", "Enter item:",)
+    if item:
+        list_box.insert(END, item)
