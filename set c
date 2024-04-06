@@ -1,0 +1,60 @@
+from tkinter import *
+from tkinter import messagebox
+
+app = Tk()
+app.title("Tkinter Exam")
+app.geometry("600x400")
+app.resizable(False, False)
+
+lbl = Label(app, text="Enter your name.")
+lbl.grid(row=0, column=0)
+
+entry = Entry(app)
+entry.grid(row=0, column=1)
+
+btn = Button(app, text="Generate Greeting", command= lambda: messagebox.showinfo(message=f"Hello, {entry.get()}"))
+btn.grid(row=1, column=1)
+
+frame1 = Frame(app)
+frame1.grid(row=2, column=1)
+
+option1_isSelected = BooleanVar()
+option1 = Checkbutton(frame1, text="Option 1", variable=option1_isSelected, command= lambda: entry.config(bg="red") if option1_isSelected.get() else entry.config(bg="white"))
+option1.pack()
+
+option2_isSelected = BooleanVar()
+option2 = Checkbutton(frame1, text="Option 2", variable=option2_isSelected, command=lambda: entry.config(fg="blue") if option2_isSelected.get() else entry.config(fg="black"))
+option2.pack()
+
+option3_isSelected = BooleanVar()
+option3 = Checkbutton(frame1, text="Option 3", variable=option3_isSelected, command=lambda: entry.config(state="disabled") if option3_isSelected.get() else entry.config(state="normal"))
+option3.pack()
+
+frame2 = Frame(app)
+frame2.grid(row=3, column=1)
+
+scrollbar = Scrollbar(frame2)
+scrollbar.pack(side="right", fill="y") 
+
+listbox = Listbox(frame2, yscrollcommand=scrollbar.set)
+listbox.pack()
+countries = ["United States", "Canada", "PH", "United Kingdom", "Australia", "Germany", "France", "Japan", "Brazil", "India", "China", "United States", "Canada", "PH", "United Kingdom", "Australia", "Germany", "France", "Japan", "Brazil", "India", "China"]
+for country in countries:
+    listbox.insert("end", country)
+
+    
+menubar = Menu(app)
+
+menu_file = Menu(menubar, tearoff=False)
+menu_file.add_command(label = "Exit", command=lambda: app.quit())
+menubar.add_cascade(label="File", menu=menu_file)
+
+menu_help = Menu(menubar, tearoff=False)
+menu_help.add_command(label="About", command=lambda: messagebox.info(message="info"))
+menubar.add_cascade(label="Help", menu=menu_help)
+
+app.config(menu=menubar)
+    
+  
+
+app.mainloop()
