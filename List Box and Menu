@@ -1,40 +1,26 @@
-from tkinter import Tk, Menu, Button, Entry, Frame, Listbox, Label
-from tkinter import messagebox
-# FILE
-current_file = random_items = ["apple", "banana", "carrot", "desk", "elephant", "frog"]
-saved_file = []
+from tkinter import Tk, Menu, Button, Entry, Frame, Listbox, Label, Scrollbar
+from tkinter import messagebox, filedialog
 
 def open_file():
-    global current_file
-
-    # removes the current elements from the listbox
-    for _ in range(len(current_file)):
-        listbox.delete(0)
-        
-    # opening or showing the last saved file
-    for i, element in enumerate(saved_file):
-        listbox.insert(i, f"• {element}")
-    listbox.config(height=listbox.size())
-    
-    # updates the current_file list    
-    current_file = saved_file.copy()
+    file_path = filedialog.askopenfilename(filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+    if file_path:
+        with open(file_path, 'r') as file:
+            data = file.read()
+            listbox.delete(0, "end")
+            for line in data.split('\n'):
+                listbox.insert("end", line)
        
 def save_file():
-    global saved_file
-    
-    # updates the saved_file list
-    saved_file = current_file.copy()
-    print (f"{saved_file = }")
+    file_path = filedialog.asksaveasfilename(defaultextension=".txt", filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")])
+    if file_path:
+        with open(file_path, 'w') as file:
+            data = '\n'.join(listbox.get(0, "end"))
+            file.write(data)
 
 def add_item():
-    
+
     def pressed_add():
-        # modifies the file
-        current_file.append(entry.get())
-        
-        # appearance
         listbox.insert("end", f"• {entry.get()}")
-        listbox.config(height=listbox.size())
         frame.destroy()
     
     frame = Frame(app)
@@ -46,12 +32,7 @@ def add_item():
     
 def delete_item():
     try:
-        # modifies the file
-        current_file.pop(listbox.curselection()[0])
-        
-        # appearance
         listbox.delete(listbox.curselection())
-        listbox.config(height=listbox.size())
     except:
         messagebox.showerror(title="Error occured", message="Select an item first")
     
@@ -59,13 +40,8 @@ def edit_item():
     
     def pressed_submit():
         try:
-            # modifies the file
-            current_file[listbox.curselection()[0]] = entry.get()
-            
-            # appearance
             listbox.insert(listbox.curselection()[0], f"• {entry.get()}")
             listbox.delete(listbox.curselection())
-            listbox.config(height=listbox.size())
             frame.destroy()
         except:
             messagebox.showerror(title="Error occured", message="Select an item first")
@@ -78,10 +54,7 @@ def edit_item():
     btn_submit.pack(side="left")
     
 def help():
-    if saved_file:
-        messagebox.showinfo(title="Application Info", message=f"Save File: {', '.join(saved_file)}")
-    else:
-        messagebox.showinfo(title="Application Info", message=f"Save File: None")
+    print("lmao")
     
 
 app = Tk()
@@ -114,13 +87,14 @@ app.configure(menu=menu)
 lbl = Label(app, text="Items:",font=("courier", 15))
 lbl.pack(pady=(5,0))
 
-# Listbox
-listbox = Listbox(app, background="#F1EEDC", font=("courier", 15))
-listbox.pack(pady=10)
+# Listbox with scorollbar
+frame_for_listbox = Frame(app)
+frame_for_listbox.pack()
 
-# Accessing the data from the current_file
-for i, element in enumerate(current_file):
-    listbox.insert(i, f"• {element}")
-listbox.config(height=listbox.size())
+scrollbar = Scrollbar(frame_for_listbox)
+scrollbar.pack(side="right", fill="y") 
+
+listbox = Listbox(frame_for_listbox, background="#F1EEDC", font=("courier", 15), yscrollcommand=scrollbar.set, height=10)
+listbox.pack(pady=10)
 
 app.mainloop()
